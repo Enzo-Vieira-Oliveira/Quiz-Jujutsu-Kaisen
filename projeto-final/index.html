@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="caixa">
+        <h1>Quiz Jujutsu Kaisen</h1>
+        <p class="sub">Clique em começar, responda e veja sua pontuação final.</p>
+
+    <div id="telaInicial" class="tela ativa">
+        <p>São 5 perguntas de múltipla escolha sobre detalhes da história de Jujutsu Kaisen.</p>
+        <button class="btnPrincipal" onclick="IniciarQuiaz()">Começar</button>
+    </div>
+
+    <div id="telaQuiz" class="tela">
+        <p id="progresso"></p>
+        <p id="textoPergunta" class="pergunta"></p>
+
+        <label>
+            <input type="radio" name="opcao" value="0" id="op0">
+            <span id="textoOp0"></span>
+        </label>
+
+        <label>
+            <input type="radio" name="opcao" value="1" id="op1">
+            <span id="textoOp1"></span>
+        </label>
+
+        <label>
+            <input type="radio" name="opcao" value="2" id="op2">
+            <span id="textoOp2"></span>
+        </label>
+
+        <label>
+            <input type="radio" name="opcao" value="3" id="op3">
+            <span id="textoOp3"></span>
+        </label>
+
+        <label>
+            <input type="radio" name="opcao" value="4" id="op4">
+            <span id="textoOp4"></span>
+        </label>
+
+        <p id="aviso"></p>
+        <button class="btnPrincipal" onclick='proximaPergunta()'>Próxima</button>
+    </div>
+
+    <div id="telaFinal" class="tela">
+        <p class="pergunta">Resultado:</p>
+        <p id="resultadoFinal"></p>
+        <button class="btn-secundario" onclick="reiniciarQuiz()">Tente novamente</button>
+    </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
