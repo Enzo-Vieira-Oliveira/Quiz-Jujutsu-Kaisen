@@ -1,61 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Quiz</title>
 </head>
 <body>
     <div class="caixa">
         <h1>Quiz Jujutsu Kaisen</h1>
-        <p class="sub">Clique em começar, responda e veja sua pontuação final.</p>
+        <p class="sub">Clique em começar, respoda e veja sua pontuação final.</p>
 
-    <div id="telaInicial" class="tela ativa">
-        <p>São 5 perguntas de múltipla escolha sobre detalhes da história de Jujutsu Kaisen.</p>
-        <button class="btnPrincipal" onclick="IniciarQuiaz()">Começar</button>
+        <div id="tela-inicial" class="tela ativa">
+            <p>São 5 perguntas de múltipla escolha sobre detalhes da história de Jujutsu Kaisen.</p>
+            <button class="btn-principal" onclick="iniciarQuiz()">Começar</button>
+        </div>
+
+        <div id="tela-quiz" class="tela">
+            <p id="progresso"></p>
+            <p id="texto-pergunta" class="pergunta"></p>
+
+            <label>
+                <input type="radio" name="opcao" value="0" id="op0">
+                <span id="texto-op0"></span>
+            </label>
+            <label>
+                <input type="radio" name="opcao" value="1" id="op1">
+                <span id="texto-op1"></span>
+            </label>
+            <label>
+                <input type="radio" name="opcao" value="2" id="op2">
+                <span id="texto-op2"></span>
+            </label>
+            <label>
+                <input type="radio" name="opcao" value="3" id="op3">
+                <span id="texto-op3"></span>
+            </label>
+
+            <p id="aviso"></p>
+            <button class="btn-principal" onclick="proximaPergunta()">Próxima</button>
+        </div>
+
+        <div id="tela-final" class="tela">
+            <p class="pergunta">Resultado:</p>
+            <p id="resultado"></p>
+            <button class="btn-secundario" onclick="reiniciar()">Tentar novamente</button>
+
+        </div>
     </div>
-
-    <div id="telaQuiz" class="tela">
-        <p id="progresso"></p>
-        <p id="textoPergunta" class="pergunta"></p>
-
-        <label>
-            <input type="radio" name="opcao" value="0" id="op0">
-            <span id="textoOp0"></span>
-        </label>
-
-        <label>
-            <input type="radio" name="opcao" value="1" id="op1">
-            <span id="textoOp1"></span>
-        </label>
-
-        <label>
-            <input type="radio" name="opcao" value="2" id="op2">
-            <span id="textoOp2"></span>
-        </label>
-
-        <label>
-            <input type="radio" name="opcao" value="3" id="op3">
-            <span id="textoOp3"></span>
-        </label>
-
-        <label>
-            <input type="radio" name="opcao" value="4" id="op4">
-            <span id="textoOp4"></span>
-        </label>
-
-        <p id="aviso"></p>
-        <button class="btnPrincipal" onclick='proximaPergunta()'>Próxima</button>
-    </div>
-
-    <div id="telaFinal" class="tela">
-        <p class="pergunta">Resultado:</p>
-        <p id="resultadoFinal"></p>
-        <button class="btn-secundario" onclick="reiniciarQuiz()">Tente novamente</button>
-    </div>
-
-    </div>
-    <script src="script.js"></script>
 </body>
+<script>
+    const perguntas = [
+        {
+            texto: "1) O que Sukuna, o principal vilão da obra, é?",
+            opcoes: ['uma maldição','um humano comum','um mestre de maldições','um feiticeiro jujutsu'],
+            correta: 2
+        },
+        {
+            texto:'2) Antes de Yuji se tornar o hospedeiro do Sukuna, a Escola Jujutsu já havia reunido quantos dedos do Rei das Maldições?',
+            opcoes: ['3 dedos','5 dedos','6 dedos','9 dedos'],
+            correta: 2
+        },
+        {
+            texto:'3) Black Flash é a técnica de Yuji Itadori. Que outro personagem, além dele, conseguiu usar esse ataque por mais vezes?',
+            opcoes: ['Aoi Todo','Nanami','Satoru Gojo','Megumi Fushiguro'],
+            correta: 1
+        },
+        {
+            texto:'4) Qual atriz faz o "tipo de mulher" de Yuji Itadori?',
+            opcoes: ['Margot Robbie','Emma Watson','Jennifer Lawrence','Scarlett Johansson'],
+            correta: 2
+        },
+        {
+            texto:'5) Qual a proporção da técnica amaldiçoada utilizada por Nanami?',
+            opcoes: ['7 por 3','7 por 7','7 por 8','7 por 10'],
+            correta: 0
+        },
+
+    ];
+
+    let indice = 0;
+    let pontos = 0;
+
+    function mostrarPergunta() {
+        const perguntaAtual = perguntas[indice];
+
+        document.getElementById('texto-pergunta').textContent = perguntaAtual.texto;
+        document.getElementById('texto-op0').textContent = " " + perguntaAtual.opcoes[0];
+        document.getElementById('texto-op1').textContent = " " + perguntaAtual.opcoes[1];
+        document.getElementById('texto-op2').textContent = " " + perguntaAtual.opcoes[2];
+        document.getElementById('texto-op3').textContent = " " + perguntaAtual.opcoes[3];
+
+        document.getElementById('progresso').textContent =
+            "Pergunta " + (indice + 1) + " de " + perguntas.length;
+
+        const radios = document.querySelectorAll('input[name="opcao"]');
+        radios.forEach(function (r) {
+            r.checked = false;
+        });
+
+        document.getElementById('aviso').textContent = "";
+    }
+
+    function iniciarQuiz() {
+        document.getElementById('tela-inicial').classList.remove('ativa');
+        document.getElementById('tela-quiz').classList.add('ativa');
+        indice = 0;
+        pontos = 0;
+        mostrarPergunta();
+    }
+
+    function proximaPergunta() {
+        const selecionada = document.querySelector('input[name="opcao"]:checked');
+
+        if (!selecionada) {
+            document.getElementById('aviso').textContent = "Escolha uma opção antes de continuar.";
+            return;
+        }
+
+        const resposta = Number(selecionada.value);
+        if (resposta === perguntas[indice].correta) {
+            pontos++;
+        }
+
+        indice++;
+
+        if (indice < perguntas.length) {
+            mostrarPergunta();
+        } else {
+            mostrarResultado();
+        }
+    }
+    function mostrarResultado() {
+        document.getElementById('tela-quiz').classList.remove('ativa');
+        document.getElementById('tela-final').classList.add('ativa');
+
+        document.getElementById('resultado').textContent =
+            "Você acertou " + pontos + " de " + perguntas.length + " perguntas.";
+    }
+    
+    function reiniciar() {
+        location.reload();
+    }
+</script>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: Arial, sans-serif;
+       background: linear-gradient(135deg, rgb(182, 47, 70), rgb(255, 255, 255));;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .caixa {
+        width: 100%;
+        max-width: 530px;
+        background: #fefce8;
+        padding: 24px 28px;
+        border-radius: 14px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 8px;
+        color: #451a03;
+    }
+    .sub {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #78350f;
+    }
+    #progresso {
+        text-align: right;
+        font-size: 13px;
+        color: #92400e;
+        margin-bottom: 8px;
+    }
+    #tela-inicio p {
+        margin-bottom: 12px;
+    }
+    .tela { display: none; }
+    .tela.ativa { display: block; }
+    .pergunta {
+        margin-bottom: 14px;
+        font-weight: bold;
+        color: #451a03;
+    }
+    label {
+        display: block;
+        margin-bottom: 6px;
+        cursor: pointer;
+        color: #713f12;
+    }
+
+    button {
+        margin-top: 12px;
+        padding: 8px 18px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .btn-principal {
+        background: #9e3636;
+        color: #fefce8;
+    }
+    .btn-principal:hover {
+        opacity: 0.9;
+    }
+    .btn-secundario {
+        background: #b43232;
+        color: #052e16;
+    }
+    #resultado {
+        font-size: 17px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 10px;
+        color: #422006;
+    }
+    #aviso {
+        font-size: 13px;
+        color: #b91c1c;
+        margin-top: 4px;
+    }
+</style>
 </html>
